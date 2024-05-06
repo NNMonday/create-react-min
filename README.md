@@ -1,6 +1,6 @@
-# @nnmonday/react-min
+# react-min
 
-@nnmonday/react-min is a command-line tool that helps you quickly create a new React project with a predefined template and install the necessary dependencies.
+react-min is a command-line tool that helps you quickly create a new React project with a predefined template and install the necessary dependencies.
 
 ## Usage
 

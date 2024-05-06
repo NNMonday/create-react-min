@@ -24,6 +24,12 @@ fs.copySync(templateDir, appDir, {
   errorOnExist: true,
 });
 
+// Rename gitignore.txt to .gitignore
+fs.renameSync(
+  path.join(appDir, "gitignore.txt"),
+  path.join(appDir, ".gitignore")
+);
+
 // Update the package.json file with the app name
 const packageJsonPath = path.join(appDir, "package.json");
 const packageJson = fs.readJsonSync(packageJsonPath);
