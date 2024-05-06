@@ -1,70 +1,39 @@
-# Getting Started with Create React App
+# @nnmonday/react-min
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+@nnmonday/react-min is a command-line tool that helps you quickly create a new React project with a predefined template and install the necessary dependencies.
 
-## Available Scripts
+## Usage
 
-In the project directory, you can run:
+To create a new React project, run the following command:
 
-### `npm start`
+```
+npx @nnmonday/react-min app-name
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Replace `app-name` with the desired name for your new React app. This command will create a new directory with the specified `app-name`, copy the files from the `template` folder, update the `package.json` file with the new app name, and install the required dependencies.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Template
 
-### `npm test`
+The `template` folder in this package contains the initial structure and files for your React project. This includes the basic configuration files, source code files, and the `package.json` file with the default dependencies.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Dependencies
 
-### `npm run build`
+The following dependencies are installed by default in the new React project:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `react`
+- `react-dom`
+- `react-scripts`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+You can add or remove dependencies as needed after the project is created.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## No Test Support
 
-### `npm run eject`
+**Warning:** This package does not include any test setup or configuration. If you need to write tests for your React components, you will need to set up a testing framework (e.g., Jest) and any necessary utilities manually.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contributing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## License
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the [MIT License](LICENSE).
