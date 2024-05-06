@@ -1,5 +1,5 @@
 {
-  "name": "react-min",
+  "name": "@nnmonday/react-min",
   "version": "1.0.0",
   "bin": {
     "@nnmonday/react-min": "./index.js"
