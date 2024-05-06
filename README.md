@@ -7,7 +7,7 @@
 To create a new React project, run the following command:
 
 ```
-npx @nnmonday/react-min app-name
+npx react-min app-name
 ```
 
 Replace `app-name` with the desired name for your new React app. This command will create a new directory with the specified `app-name`, copy the files from the `template` folder, update the `package.json` file with the new app name, and install the required dependencies.
