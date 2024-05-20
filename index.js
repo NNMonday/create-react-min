@@ -5,6 +5,7 @@ const path = require("path");
 const { execSync } = require("child_process");
 
 const appName = process.argv[2];
+const optionalArgs = process.argv.slice(3); // Get all optional arguments
 
 if (!appName) {
   console.error("Please provide an app name as an argument.");
@@ -30,17 +31,79 @@ fs.renameSync(
   path.join(appDir, ".gitignore")
 );
 
-// Update the package.json file with the app name
+// Update the package.json file with the app name and optional dependencies
 const packageJsonPath = path.join(appDir, "package.json");
 const packageJson = fs.readJsonSync(packageJsonPath);
 packageJson.name = appName;
-fs.writeJsonSync(packageJsonPath, packageJson, { spaces: 2 });
 
-// Update the package-lock.json file with the app name
-const packageLockJsonPath = path.join(appDir, "package-lock.json");
-const packageLockJson = fs.readJsonSync(packageLockJsonPath);
-packageLockJson.name = appName;
-fs.writeJsonSync(packageLockJsonPath, packageLockJson, { spaces: 2 });
+packageJson.dependencies = {
+  react: "*", // Latest version of React
+  "react-dom": "*", // Latest version of react-dom
+  "react-scripts": "*", // Specific version of react-scripts
+};
+
+// Handle optional dependencies
+optionalArgs.forEach((arg) => {
+  const [dependency, version] = arg.split("@");
+
+  switch (dependency) {
+    case "-router":
+      packageJson.dependencies["react-router-dom"] = "*";
+      break;
+    case "-bootstrap":
+      packageJson.dependencies["bootstrap"] = "*";
+      packageJson.dependencies["react-bootstrap"] = "*";
+      // Define the path to the index.js file inside the src folder of the template directory
+      const indexFilePath = path.join(appDir, "template", "src", "index.js");
+
+      // Read the content of the index.js file
+      let indexFileContent = fs.readFileSync(indexFilePath, "utf8");
+
+      // Define the import statement for Bootstrap
+      const bootstrapImportStatement =
+        "import 'bootstrap/dist/css/bootstrap.min.css';";
+
+      // Define a regular expression to match import statements
+      const importRegex = /import .*?;(?=\n|$)/g;
+
+      // Find all import statements in the file
+      const importStatements = indexFileContent.match(importRegex);
+
+      // If there are import statements, find the last one and insert the Bootstrap import statement after it
+      if (importStatements) {
+        const lastImportStatement =
+          importStatements[importStatements.length - 1];
+        const lastIndex =
+          indexFileContent.lastIndexOf(lastImportStatement) +
+          lastImportStatement.length;
+        indexFileContent =
+          indexFileContent.slice(0, lastIndex) +
+          "\n" +
+          bootstrapImportStatement +
+          "\n" +
+          indexFileContent.slice(lastIndex);
+      } else {
+        // If there are no import statements, just prepend the Bootstrap import statement at the beginning
+        indexFileContent = bootstrapImportStatement + "\n" + indexFileContent;
+      }
+
+      // Write the modified content back to the index.js file
+      fs.writeFileSync(indexFilePath, indexFileContent);
+
+      break;
+    // Add more cases for other optional dependencies
+    default:
+      break;
+  }
+
+  if (dependency && version) {
+    packageJson.dependencies[dependency] = version;
+  } else if (dependency) {
+    packageJson.dependencies[dependency] = "*"; // No specific version
+  }
+});
+
+fs.writeJsonSync(packageJsonPath, packageJson, { spaces: 2 });
 
 // Install dependencies
 console.log("Installing dependencies...");

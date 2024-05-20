@@ -1,8 +1,8 @@
 {
   "name": "react-min",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "bin": {
-    "react-min": "index.js"
+    "create-react-min": "index.js"
   },
   "description": "Minimized version of CRA",
   "main": "./index.js",
