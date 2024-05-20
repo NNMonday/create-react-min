@@ -1,13 +1,13 @@
-# create-react-min
+# create-react-nnmonday
 
-create-react-min is a command-line tool that helps you quickly create a new React project with a predefined template and install the necessary dependencies.
+create-react-nnmonday is a command-line tool that helps you quickly create a new React project with a predefined template and install the necessary dependencies.
 
 ## Usage
 
 To create a new React project, run the following command:
 
 ```
-npx create-react-min app-name
+npx create-react-nnmonday app-name
 ```
 
 Replace `app-name` with the desired name for your new React app. This command will create a new directory with the specified `app-name`, copy the files from the `template` folder, update the `package.json` file with the new app name, and install the required dependencies.
