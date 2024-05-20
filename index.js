@@ -46,6 +46,7 @@ packageJson.dependencies = {
 optionalArgs.forEach((arg) => {
   const [dependency, version] = arg.split("@");
 
+  const excludeCase = ["-router", "-bootstrap"];
   switch (dependency) {
     case "-router":
       packageJson.dependencies["react-router-dom"] = "*";
@@ -54,7 +55,7 @@ optionalArgs.forEach((arg) => {
       packageJson.dependencies["bootstrap"] = "*";
       packageJson.dependencies["react-bootstrap"] = "*";
       // Define the path to the index.js file inside the src folder of the template directory
-      const indexFilePath = path.join(appDir, "template", "src", "index.js");
+      const indexFilePath = path.join(appDir, "src", "index.js");
 
       // Read the content of the index.js file
       let indexFileContent = fs.readFileSync(indexFilePath, "utf8");
@@ -95,11 +96,12 @@ optionalArgs.forEach((arg) => {
     default:
       break;
   }
-
-  if (dependency && version) {
-    packageJson.dependencies[dependency] = version;
-  } else if (dependency) {
-    packageJson.dependencies[dependency] = "*"; // No specific version
+  if (!excludeCase.includes(dependency)) {
+    if (dependency && version) {
+      packageJson.dependencies[dependency] = version;
+    } else if (dependency) {
+      packageJson.dependencies[dependency] = "*"; // No specific version
+    }
   }
 });
 
@@ -109,6 +111,22 @@ fs.writeJsonSync(packageJsonPath, packageJson, { spaces: 2 });
 console.log("Installing dependencies...");
 try {
   execSync("npm install", { cwd: appDir, stdio: "inherit" });
+
+  // Define a function to update the dependencies dynamically
+  const updateDependencyVersions = () => {
+    Object.keys(packageJson.dependencies).forEach((dependency) => {
+      if (packageJson.dependencies[dependency] === "*") {
+        const installedVersion = require(path.join(
+          appDir,
+          "node_modules",
+          dependency + "/package.json"
+        )).version;
+        packageJson.dependencies[dependency] = installedVersion;
+      }
+    });
+  };
+  updateDependencyVersions();
+  fs.writeJsonSync(packageJsonPath, packageJson, { spaces: 2 });
 } catch (error) {
   console.error("Failed to install dependencies:", error);
   process.exit(1);
