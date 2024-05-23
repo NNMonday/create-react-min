@@ -46,7 +46,6 @@ packageJson.dependencies = {
 optionalArgs.forEach((arg) => {
   const [dependency, version] = arg.split("@");
 
-  const excludeCase = ["-router", "-bootstrap"];
   switch (dependency) {
     case "-router":
       packageJson.dependencies["react-router-dom"] = "*";
@@ -92,16 +91,23 @@ optionalArgs.forEach((arg) => {
       fs.writeFileSync(indexFilePath, indexFileContent);
 
       break;
-    // Add more cases for other optional dependencies
-    default:
+    case "-git": // New case for handling the -git optional argument
+      if (arg === "-git") {
+        try {
+          execSync("git init", { cwd: appDir, stdio: "inherit" });
+        } catch (error) {
+          console.error("Failed to initialize Git repository:", error);
+          process.exit(1);
+        }
+      }
       break;
-  }
-  if (!excludeCase.includes(dependency)) {
-    if (dependency && version) {
-      packageJson.dependencies[dependency] = version;
-    } else if (dependency) {
-      packageJson.dependencies[dependency] = "*"; // No specific version
-    }
+    default:
+      if (dependency && version) {
+        packageJson.dependencies[dependency] = version;
+      } else if (dependency) {
+        packageJson.dependencies[dependency] = "*"; // No specific version
+      }
+      break;
   }
 });
 
