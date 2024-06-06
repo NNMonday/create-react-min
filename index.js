@@ -47,6 +47,55 @@ optionalArgs.forEach((arg) => {
   const [dependency, version] = arg.split("@");
 
   switch (dependency) {
+    case "-fer":
+      packageJson.dependencies["react-router-dom"] = "*";
+      packageJson.dependencies["bootstrap"] = "*";
+      packageJson.dependencies["react-bootstrap"] = "*";
+      // Define the path to the index.js file inside the src folder of the template directory
+      const indexFilePathFer = path.join(appDir, "src", "index.js");
+
+      // Read the content of the index.js file
+      let indexFileContentFer = fs.readFileSync(indexFilePathFer, "utf8");
+
+      // Define the import statement for Bootstrap
+      const bootstrapImportStatementFer =
+        "import 'bootstrap/dist/css/bootstrap.min.css';";
+
+      // Define a regular expression to match import statements
+      const importRegexFer = /import .*?;(?=\n|$)/g;
+
+      // Find all import statements in the file
+      const importStatementsFer = indexFileContentFer.match(importRegexFer);
+
+      // If there are import statements, find the last one and insert the Bootstrap import statement after it
+      if (importStatementsFer) {
+        const lastImportStatement =
+          importStatementsFer[importStatementsFer.length - 1];
+        const lastIndex =
+          indexFileContentFer.lastIndexOf(lastImportStatement) +
+          lastImportStatement.length;
+        indexFileContentFer =
+          indexFileContentFer.slice(0, lastIndex) +
+          "\n" +
+          bootstrapImportStatementFer +
+          "\n" +
+          indexFileContentFer.slice(lastIndex);
+      } else {
+        // If there are no import statements, just prepend the Bootstrap import statement at the beginning
+        indexFileContentFer =
+          bootstrapImportStatementFer + "\n" + indexFileContentFer;
+      }
+
+      // Write the modified content back to the index.js file
+      fs.writeFileSync(indexFilePathFer, indexFileContentFer);
+
+      try {
+        execSync("git init", { cwd: appDir, stdio: "inherit" });
+      } catch (error) {
+        console.error("Failed to initialize Git repository:", error);
+        process.exit(1);
+      }
+      break;
     case "-router":
       packageJson.dependencies["react-router-dom"] = "*";
       break;
@@ -92,13 +141,11 @@ optionalArgs.forEach((arg) => {
 
       break;
     case "-git": // New case for handling the -git optional argument
-      if (arg === "-git") {
-        try {
-          execSync("git init", { cwd: appDir, stdio: "inherit" });
-        } catch (error) {
-          console.error("Failed to initialize Git repository:", error);
-          process.exit(1);
-        }
+      try {
+        execSync("git init", { cwd: appDir, stdio: "inherit" });
+      } catch (error) {
+        console.error("Failed to initialize Git repository:", error);
+        process.exit(1);
       }
       break;
     default:
